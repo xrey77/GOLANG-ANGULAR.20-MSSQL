@@ -30,6 +30,7 @@ func Register(c *gin.Context) {
 	}
 
 	userName, _ := SearchByUsername(user.Username)
+
 	if len(userName) > 0 {
 		c.JSON(400, gin.H{"message": "Username is already taken."})
 		return
@@ -42,6 +43,8 @@ func Register(c *gin.Context) {
 		Mobile:    user.Mobile,
 		Username:  user.Username,
 		Password:  hashPwd,
+		Role_id:   2,
+		Roles:     []models.Role{{ID: 2}},
 	}
 	res := db.Create(&userModel)
 	rec := res.RowsAffected

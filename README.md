@@ -1,11 +1,11 @@
-<h3>Go 1.24 + Gin Gonic, Angular CLI 20.3.0 and MSSQL Start-up Project</h3>
+<h3>Go 1.24 + Gin Gonic, Angular CLI 20.3.0 and MSSQL / Azure SQL Start-up Project</h3>
 
 <p>Dependencies</p>
 <p>1. Node 22.12.0</p>
 <p>2. Npm 11.5.1</p>
 
 <p>Requirements: </p>
-<p>1. Microsoft SQL Server 2017/2019 Management</p>
+<p>1. Microsoft SQL Server 2017/2019 or Azure SQL Management</p>
 <p>2. Golang + Gin Gonic, Angular CLI - Typescript</p>
 <p>3. Install Google or Microsoft Authenticator in your Mobile Phone</p>
 
