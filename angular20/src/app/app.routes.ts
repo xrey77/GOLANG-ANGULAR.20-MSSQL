@@ -6,6 +6,8 @@ import { Profile } from './profile/profile';
 import { Prodlist } from './prodlist/prodlist';
 import { Prodcatalog } from './prodcatalog/prodcatalog';
 import { Prodsearch } from './prodsearch/prodsearch';
+import { Pdfreport } from './pdfreport/pdfreport';
+import { Saleschart } from './saleschart/saleschart';
 import { ErrorPageComponent } from './error-page-component/error-page-component';
 
 export const routes: Routes = [
@@ -17,5 +19,7 @@ export const routes: Routes = [
     { path: 'productlist', component: Prodlist, title: 'Products List' },
     { path: 'productcatalog', component: Prodcatalog,title: 'Products Catalog' },
     { path: 'productsearch', component: Prodsearch, title: 'Product Search' },
+    { path: 'pdfreport', component: Pdfreport, title: 'Products PDF Report' },
+    { path: 'saleschart', component: Saleschart, title: 'Sales Graph' },
     { path: '**', component: ErrorPageComponent }    
 ];

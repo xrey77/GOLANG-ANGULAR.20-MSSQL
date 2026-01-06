@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"net/http"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +10,7 @@ import (
 
 func GetAllusers(c *gin.Context) {
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	var users []dto.Users
 
 	// Use GORM's Find method to retrieve all records

@@ -3,7 +3,7 @@ package middleware
 import (
 	"encoding/json"
 	"log"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 	"src/golang_mssql/models"
 	utils "src/golang_mssql/util"
@@ -21,7 +21,7 @@ func Register(c *gin.Context) {
 	plainPwd := user.Password
 	hashPwd, _ := utils.HashPassword(plainPwd)
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	userEmail, _ := SearchByEmail(user.Email)
 	if len(userEmail) > 0 {
 		c.JSON(400, gin.H{
@@ -59,7 +59,7 @@ func Register(c *gin.Context) {
 func SearchByEmail(email string) ([]models.User, error) {
 	var users []models.User
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	result := db.Where("email = ?", email).Find(&users)
 
 	if result.Error != nil {
@@ -71,7 +71,7 @@ func SearchByEmail(email string) ([]models.User, error) {
 func SearchByUsername(username string) ([]models.User, error) {
 	var users []models.User
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	result := db.Where("username = ?", username).Find(&users)
 
 	if result.Error != nil {

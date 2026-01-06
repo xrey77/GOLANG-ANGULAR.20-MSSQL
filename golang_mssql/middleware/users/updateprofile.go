@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"encoding/json"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 	"src/golang_mssql/models"
 	utils "src/golang_mssql/util"
@@ -26,7 +26,7 @@ func UpdateProfile(c *gin.Context) {
 		return
 	}
 	if len(user) > 0 {
-		db := config.Connection()
+		db := dbconfig.Connection()
 		db.Model(&models.User{}).Where("id = ?", id).Updates(userDto)
 		db.Commit()
 		c.JSON(200, gin.H{"message": "Your Profile has been successfully changed."})

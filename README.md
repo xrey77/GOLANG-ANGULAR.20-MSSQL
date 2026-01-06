@@ -16,5 +16,7 @@
 This will require your Google/Microsoft Authenticator</p>
 <p>4. Upload User's Profile Picture </p>
 <p>5. Products Listings, Catalogs pagination and Product Search</p>
+<p>6. Product PDF Report</p>
+<p>7. Sales Graph</p>
 
 

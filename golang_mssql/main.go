@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"log" // built-in package for HTTP status codes
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/middleware"
 	auth "src/golang_mssql/middleware/auth"
 	products "src/golang_mssql/middleware/products"
@@ -17,7 +17,7 @@ import (
 )
 
 func init() {
-	config.Connection()
+	dbconfig.Connection()
 	err1 := godotenv.Load(".env")
 	if err1 != nil {
 		log.Fatalf("Error loading .env file")
@@ -59,6 +59,20 @@ func main() {
 
 	router.GET("/products/list/:page", products.ProductList)
 	router.GET("/products/search/:page/:key", products.ProductSearch)
+	router.GET("/products/report", products.ProductPDFReport)
+	// router.GET("/sales/chart", func(c *gin.Context) {
+	// 	val, lab := products.GetSalesData()
+	// 	graph := products.CreateBarChart(val, lab)
+	// 	c.Header("Content-Type", "text/html; charset=utf-8")
+	// 	graph.Render(c.Writer)
+	// })
+	router.GET("/chart", func(c *gin.Context) {
+		c.Header("Content-Type", "text/html; charset=utf-8")
+		val, lab := products.GetSalesData()
+		graph := products.CreateBarChart(val, lab)
+
+		graph.Render(c.Writer)
+	})
 
 	host := "http://127.0.0.1"
 	port := "5000"

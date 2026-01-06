@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 	"src/golang_mssql/models"
 )
@@ -9,7 +9,7 @@ import (
 func GetByUsername(username string) ([]models.User, error) {
 	var users []models.User
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	result := db.Where("username = ?", username).Find(&users)
 
 	if result.Error != nil {
@@ -21,7 +21,7 @@ func GetByUsername(username string) ([]models.User, error) {
 func GetByUserId(id string) ([]dto.Users, error) {
 	var users []dto.Users
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	result := db.Where("id = ?", id).Find(&users)
 
 	if result.Error != nil {

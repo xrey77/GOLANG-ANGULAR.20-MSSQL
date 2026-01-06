@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"math"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 	"src/golang_mssql/models"
 	"strconv"
@@ -13,7 +13,7 @@ import (
 func ProductList(c *gin.Context) {
 	page := c.Param("page")
 	perPage := 5
-	db := config.Connection()
+	db := dbconfig.Connection()
 
 	var products []models.Product
 	result := db.Find(&products)

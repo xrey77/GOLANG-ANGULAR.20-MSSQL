@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 	"src/golang_mssql/models"
 	utils "src/golang_mssql/util"
@@ -24,7 +24,7 @@ func MfaActivate(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Unable to decode the request body.  %v", err)
 	}
-	db := config.Connection()
+	db := dbconfig.Connection()
 
 	if user.TwoFactoEnabled {
 		user, err := utils.GetByUserId(id)

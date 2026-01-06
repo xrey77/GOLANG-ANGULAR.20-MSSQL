@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"math"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 	"src/golang_mssql/models"
 	"strconv"
@@ -17,7 +17,7 @@ func ProductSearch(c *gin.Context) {
 	search := "%" + key + "%"
 
 	perPage := 5
-	db := config.Connection()
+	db := dbconfig.Connection()
 
 	var products []models.Product
 	result := db.Where("descriptions LIKE ?", search).Find(&products)

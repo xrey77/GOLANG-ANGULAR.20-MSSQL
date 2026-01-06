@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +20,7 @@ func MfaVerifyotp(c *gin.Context) {
 	if err1 != nil {
 		log.Fatalf("Unable to decode the request body.  %v", err1)
 	}
-	db := config.Connection()
+	db := dbconfig.Connection()
 	var users []dto.Users
 	user := db.Where("id = ?", id).Find(&users)
 	if user.Error != nil {

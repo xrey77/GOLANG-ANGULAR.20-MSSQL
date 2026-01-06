@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"path/filepath"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/models"
 	utils "src/golang_mssql/util"
 
@@ -37,7 +37,7 @@ func UploadPicture(c *gin.Context) {
 			return
 		}
 
-		db := config.Connection()
+		db := dbconfig.Connection()
 		uri := "http://127.0.0.1:5000/assets/users/" + newfile
 		db.Model(&models.User{}).Where("id = ?", id).Update("userpicture", uri)
 		db.Commit()

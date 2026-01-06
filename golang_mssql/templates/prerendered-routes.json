@@ -3,10 +3,12 @@
     "/": {},
     "/about": {},
     "/contact": {},
+    "/pdfreport": {},
     "/productcatalog": {},
     "/productlist": {},
     "/productsearch": {},
     "/profile": {},
+    "/saleschart": {},
     "/static": {}
   }
 }

@@ -3,7 +3,7 @@ package middleware
 import (
 	"encoding/json"
 	"errors"
-	"src/golang_mssql/config"
+	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/dto"
 	utils "src/golang_mssql/util"
 
@@ -63,7 +63,7 @@ func Login(c *gin.Context) {
 func GetUserInfo(userName string) (*dto.Users, error) {
 	var user dto.Users
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	result := db.Where("username = ?", userName).Find(&user)
 
 	if result.Error != nil {
@@ -78,7 +78,7 @@ func GetUserInfo(userName string) (*dto.Users, error) {
 func GetRolName(id string) (*dto.Roles, error) {
 	var roles dto.Roles
 
-	db := config.Connection()
+	db := dbconfig.Connection()
 	result := db.Where("id = ?", id).Find(&roles)
 
 	if result.Error != nil {

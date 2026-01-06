@@ -1,4 +1,4 @@
-package config
+package dbconfig
 
 import (
 	"fmt"
@@ -22,7 +22,7 @@ func Connection() *gorm.DB {
 		fmt.Println("connected to mssql server 2019 database.")
 	}
 
-	DB.AutoMigrate(&models.User{}, &models.Product{})
+	DB.AutoMigrate(&models.User{}, &models.Sale{}, &models.Product{})
 	log.Print("Tables Created....")
 
 	return DB

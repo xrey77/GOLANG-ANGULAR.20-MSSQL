@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/pdfreport/pdfreport.scss"],
+  "sourcesContent": [".pdf-container {\n    background-color: black !important;\n    object-fit: cover;\n    height: 90vh !important;\n}"],
+  "mappings": "AAAA,CAAA,cACI,iBAAA,eACA,WAAA,MACA,OAAA",
+  "names": []
+}
