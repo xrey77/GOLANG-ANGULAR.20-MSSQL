@@ -5,12 +5,15 @@ import (
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
 	"github.com/johnfercher/maroto/v2"
+	"github.com/johnfercher/maroto/v2/pkg/components/image"
 	"github.com/johnfercher/maroto/v2/pkg/components/row"
-
 	"github.com/johnfercher/maroto/v2/pkg/components/text"
 	"github.com/johnfercher/maroto/v2/pkg/config"
 	"github.com/johnfercher/maroto/v2/pkg/consts/align"
+	"github.com/johnfercher/maroto/v2/pkg/consts/extension"
 	"github.com/johnfercher/maroto/v2/pkg/consts/fontstyle"
+	"log"
+	"os"
 
 	"github.com/johnfercher/maroto/v2/pkg/consts/border"
 	"github.com/johnfercher/maroto/v2/pkg/props"
@@ -35,6 +38,17 @@ func ProductPDFReport(c *gin.Context) {
 
 	m := maroto.New(cfg)
 
+	err := m.RegisterFooter(
+		text.NewRow(10, "Prepared by: Rey Gragasin", props.Text{
+			Size:  6,
+			Align: align.Left,
+			Top:   5,
+		}),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	db := dbconfig.Connection()
 
 	// 1. Fetch data from MSSQL (Assuming 'db' is your *gorm.DB instance)
@@ -44,56 +58,87 @@ func ProductPDFReport(c *gin.Context) {
 		return
 	}
 
-	// 2. Add Header
 	now := time.Now()
-	m.AddRows(row.New(10).Add(
-		text.NewCol(12, "Product List Report", props.Text{
-			Size:  20,
-			Style: fontstyle.Bold,
-			Align: align.Center,
-		}),
-	))
+	imgBytes, err := os.ReadFile("assets/images/logo.png")
+	if err != nil {
+		log.Fatalf("failed to read logo: %v", err)
+	}
 
-	m.AddRows(row.New(15).Add(
-		text.NewCol(12, "As of "+now.Format("January 6, 2006"), props.Text{
-			Size:  10,
-			Style: fontstyle.Normal,
-			Align: align.Center,
-		}),
-	))
+	m.AddRows(
+		row.New(20).Add(
+			image.NewFromBytesCol(14, imgBytes, extension.Png, props.Rect{
+				Center:  true,
+				Percent: 80,
+			}),
+		),
+		row.New(15).Add(
+			text.NewCol(12, "Product List Report", props.Text{
+				Top:   5,
+				Size:  20,
+				Style: fontstyle.Bold,
+				Align: align.Center,
+			}),
+		),
+		row.New(18).Add(
+			text.NewCol(12, "As of "+now.Format("January 6, 2006"), props.Text{
+				Size:  10,
+				Style: fontstyle.Normal,
+				Align: align.Center,
+			}),
+		),
+		row.New(5).Add(
+			text.NewCol(1, "ID", props.Text{Style: fontstyle.Bold, Align: align.Center}).
+				WithStyle(&props.Cell{
+					BorderType:      border.Full,
+					BorderColor:     &props.Color{Red: 0, Green: 0, Blue: 0}, // Black
+					BorderThickness: 0.1,
+				}),
+			text.NewCol(6, "Product Descriptions", props.Text{Style: fontstyle.Bold, Align: align.Center}).
+				WithStyle(&props.Cell{
+					BorderType:      border.Full,
+					BorderThickness: 0.1,
+				}),
 
-	// 3. Add Table Headers
-	m.AddRows(row.New(5).Add(
-		text.NewCol(2, "ID", props.Text{Style: fontstyle.Bold, Align: align.Center}).
-			WithStyle(&props.Cell{
-				BorderType:      border.Full,
-				BorderColor:     &props.Color{Red: 0, Green: 0, Blue: 0}, // Black
-				BorderThickness: 0.1,
-			}),
-		text.NewCol(6, "Product Descriptions", props.Text{Style: fontstyle.Bold, Align: align.Center}).
-			WithStyle(&props.Cell{
-				BorderType:      border.Full,
-				BorderThickness: 0.1,
-			}),
-		text.NewCol(4, "Price", props.Text{Style: fontstyle.Bold, Align: align.Center}).
-			WithStyle(&props.Cell{
-				BorderType:      border.Full,
-				BorderThickness: 0.1,
-			}),
-	))
+			text.NewCol(1, "Stocks", props.Text{Style: fontstyle.Bold, Align: align.Center}).
+				WithStyle(&props.Cell{
+					BorderType:      border.Full,
+					BorderThickness: 0.1,
+				}),
 
-	// m.AddRows(line.NewRow(1))
+			text.NewCol(2, "CostPrice", props.Text{Style: fontstyle.Bold, Align: align.Center}).
+				WithStyle(&props.Cell{
+					BorderType:      border.Full,
+					BorderThickness: 0.1,
+				}),
+
+			text.NewCol(2, "SellPrice", props.Text{Style: fontstyle.Bold, Align: align.Center}).
+				WithStyle(&props.Cell{
+					BorderType:      border.Full,
+					BorderThickness: 0.1,
+				}),
+		),
+	)
 
 	// 4. Populate Data Rows
 	for _, p := range products {
-		priceFloat, _ := p.Sellprice.Float64()
-		formattedPrice := humanize.Commaf(priceFloat)
-		formattedPrice = humanize.FormatFloat("#,###.##", priceFloat)
+		costpriceFloat, _ := p.Costprice.Float64()
+		formattedCostPrice := humanize.Commaf(costpriceFloat)
+		formattedCostPrice = humanize.FormatFloat("#,###.##", costpriceFloat)
+
+		sellpriceFloat, _ := p.Sellprice.Float64()
+		formattedSellPrice := humanize.Commaf(sellpriceFloat)
+		formattedSellPrice = humanize.FormatFloat("#,###.##", sellpriceFloat)
 
 		m.AddRows(row.New(8).Add(
-			text.NewCol(2, fmt.Sprintf("%d", p.ID), props.Text{Style: fontstyle.Normal, Align: align.Center}),
+			// ID (Narrower)
+			text.NewCol(1, fmt.Sprintf("%d", p.ID), props.Text{Style: fontstyle.Normal, Align: align.Center}),
+			// Descriptions (Wider)
 			text.NewCol(6, p.Descriptions),
-			text.NewCol(4, formattedPrice, props.Text{Align: align.Center}),
+			// Qty (Narrower)
+			text.NewCol(1, fmt.Sprintf("%d", p.Qty), props.Text{Style: fontstyle.Normal, Align: align.Center}),
+			// // CostPrice & SellPrice (Narrower)
+			text.NewCol(2, formattedCostPrice, props.Text{Align: align.Center}),
+			text.NewCol(2, formattedSellPrice, props.Text{Align: align.Center}),
 		))
 	}
 
@@ -106,7 +151,7 @@ func ProductPDFReport(c *gin.Context) {
 
 	pdfBytes := doc.GetBytes()
 
-	c.Header("Content-Disposition", "attachment; filename=products_report_2026.pdf")
+	// c.Header("Content-Disposition", "attachment; filename=products_report_2026.pdf")
 	c.Header("Content-Type", "application/pdf")
 	c.Header("Content-Length", fmt.Sprintf("%d", len(pdfBytes)))
 	c.Header("Content-Disposition", "attachment; filename=products.pdf")

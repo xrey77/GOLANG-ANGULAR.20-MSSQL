@@ -10,7 +10,13 @@ func CreateBarChart(values []float64, labels []string) *charts.Bar {
 	bar.SetGlobalOptions(
 		charts.WithTitleOpts(opts.Title{
 			Title:    "Apple Inc.",
-			Subtitle: "Revenue Over Time",
+			Subtitle: "Revenue Over Time for the year 2025",
+		}),
+		charts.WithXAxisOpts(opts.XAxis{
+			AxisLabel: &opts.AxisLabel{
+				Show:      opts.Bool(true),
+				Formatter: opts.FuncOpts("function (value) { var date = new Date(value); return date.toLocaleString('default', { month: 'short' }); }"),
+			},
 		}),
 	)
 	bar.SetXAxis(labels).AddSeries("Sales", generateBarItems(values))

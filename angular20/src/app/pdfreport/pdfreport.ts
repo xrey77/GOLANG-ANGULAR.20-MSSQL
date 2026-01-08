@@ -10,7 +10,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrl: './pdfreport.scss',
 })
 export class Pdfreport implements OnInit {
-  // Use inject() for modern DI
   private productsService = inject(Productservice);
   private sanitizer = inject(DomSanitizer);
   private destroyRef = inject(DestroyRef);

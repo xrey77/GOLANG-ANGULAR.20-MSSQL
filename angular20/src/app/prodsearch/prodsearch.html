@@ -12,19 +12,19 @@
         </div>
     </form>
     
-    <div class="card-group">
+     <div class="card-group">
       @for (prods of products; track prods.id) {
        <div class="col-md-4">
-        <div class="card mx-1 mt-3">
-        <img src="{{prods.productpicture}}" class="card-img-top product-size" alt="Product Image"/>
-        <div class="card-body">
-          <h5 class="card-title">Descriptions</h5>
-          <p class="card-text">{{prods.descriptions}}</p>
-        </div>
-        <div class="card-footer">
+          <div class="card mx-1 mt-3">
+            <img src="{{prods.productpicture}}" class="card-img-top product-size" alt="Product Image"/>
+            <div class="card-body">
+              <h5 class="card-title">Descriptions</h5>
+              <p class="card-text">{{prods.descriptions}}</p>
+            </div>
+          <div class="card-footer">
           <p class="card-text text-danger"><span class="text-dark">PRICE :</span>&nbsp;<strong>{{toDecimal(prods.sellprice) }}</strong></p>
         </div>  
-        </div>
+      </div>
     </div>
     }
   </div>    

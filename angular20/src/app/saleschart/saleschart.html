@@ -1,5 +1,15 @@
+<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
 
-<div class="chart-container">
+<iframe 
+  [src]="chartSafeUrl" 
+  (load)="onIframeLoad()" 
+  style="width: 100%; height: 500px; border: none;">
+</iframe>
+<!-- <div class="chart-container">
+  @if (isLoading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
   @if (chartSafeUrl) {
     <iframe 
     [src]="chartSafeUrl" 
@@ -9,4 +19,4 @@
     sandbox="allow-scripts allow-same-origin">
   </iframe>  
   }
-</div>
+</div> -->

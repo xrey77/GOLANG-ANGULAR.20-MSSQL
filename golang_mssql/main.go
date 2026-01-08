@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log" // built-in package for HTTP status codes
+	"log"
 	"src/golang_mssql/dbconfig"
 	"src/golang_mssql/middleware"
 	auth "src/golang_mssql/middleware/auth"
@@ -22,11 +22,9 @@ func init() {
 	if err1 != nil {
 		log.Fatalf("Error loading .env file")
 	}
-
 }
 
 func main() {
-
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
@@ -60,17 +58,10 @@ func main() {
 	router.GET("/products/list/:page", products.ProductList)
 	router.GET("/products/search/:page/:key", products.ProductSearch)
 	router.GET("/products/report", products.ProductPDFReport)
-	// router.GET("/sales/chart", func(c *gin.Context) {
-	// 	val, lab := products.GetSalesData()
-	// 	graph := products.CreateBarChart(val, lab)
-	// 	c.Header("Content-Type", "text/html; charset=utf-8")
-	// 	graph.Render(c.Writer)
-	// })
 	router.GET("/chart", func(c *gin.Context) {
 		c.Header("Content-Type", "text/html; charset=utf-8")
 		val, lab := products.GetSalesData()
 		graph := products.CreateBarChart(val, lab)
-
 		graph.Render(c.Writer)
 	})
 

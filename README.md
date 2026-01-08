@@ -18,5 +18,6 @@ This will require your Google/Microsoft Authenticator</p>
 <p>5. Products Listings, Catalogs pagination and Product Search</p>
 <p>6. Product PDF Report</p>
 <p>7. Sales Graph</p>
+<p>8. Swagger api-docs, http://localhost:5000/swagger/index.html</p>
 
 
