@@ -1,0 +1,36 @@
+name: Go API CI Pipeline
+
+# Trigger this workflow every time someone pushes to the main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    # Tells GitHub to use a fresh, pre-configured Ubuntu Linux runner machine
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Download your source code onto the runner machine
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Step 2: Install and configure Go environment on the runner
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.22' # Replace with your exact Go version
+
+    # Step 3: Cache and download project dependencies
+    - name: Install Dependencies
+      run: go mod download
+
+    # Step 4: Verify code structure and style layout 
+    - name: Run Linter/Vet
+      run: go vet ./...
+
+    # Step 5: Execute all project unit tests
+    - name: Run Tests
+      run: go test -v -race -covermode=atomic -coverprofile=coverage.out ./...
